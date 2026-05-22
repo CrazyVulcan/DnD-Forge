@@ -1,6 +1,6 @@
 const STORAGE_KEY = "situation-forge-state-v1";
 const MAX_PARTY_SIZE = 4;
-const WEATHER_MEMORY = 3;
+const MAX_WEATHER_HISTORY_LENGTH = 3;
 
 const TABLES = {
   environments: [
@@ -87,7 +87,7 @@ function rand(list) {
   return list[Math.floor(Math.random() * list.length)];
 }
 
-function randomOffset() {
+function randomVariation() {
   return Math.floor(Math.random() * 2) - 1;
 }
 
@@ -211,8 +211,8 @@ function generateFaction() {
   const faction = {
     name: rand(TABLES.factionNames),
     goal: rand(TABLES.factionGoals),
-    hostility: Math.min(5, Math.max(1, state.world.dangerLevel + randomOffset())),
-    influence: Math.min(5, Math.max(1, state.world.factionPressure + randomOffset())),
+    hostility: Math.min(5, Math.max(1, state.world.dangerLevel + randomVariation())),
+    influence: Math.min(5, Math.max(1, state.world.factionPressure + randomVariation())),
     action: rand(TABLES.factionActions)
   };
   state.factions.push(faction);
@@ -235,9 +235,9 @@ function escalationTick() {
   if (!state.world.weather) {
     state.world.weather = rand(TABLES.weather);
   } else {
-    const history = state.world.weather.split("; ").slice(-(WEATHER_MEMORY - 1));
+    const history = state.world.weather.split("; ");
     history.push(`worsening ${rand(TABLES.weather)}`);
-    state.world.weather = history.join("; ");
+    state.world.weather = history.slice(-MAX_WEATHER_HISTORY_LENGTH).join("; ");
   }
   renderWorld();
   logEntry(
