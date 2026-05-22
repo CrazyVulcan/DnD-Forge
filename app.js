@@ -85,6 +85,10 @@ function rand(list) {
   return list[Math.floor(Math.random() * list.length)];
 }
 
+function randomOffset() {
+  return Math.floor(Math.random() * 2) - 1;
+}
+
 function escapeHtml(value) {
   return String(value ?? "")
     .replace(/&/g, "&amp;")
@@ -205,8 +209,8 @@ function generateFaction() {
   const faction = {
     name: rand(TABLES.factionNames),
     goal: rand(TABLES.factionGoals),
-    hostility: Math.min(5, Math.max(1, state.world.dangerLevel + Math.floor(Math.random() * 2) - 1)),
-    influence: Math.min(5, Math.max(1, state.world.factionPressure + Math.floor(Math.random() * 2) - 1)),
+    hostility: Math.min(5, Math.max(1, state.world.dangerLevel + randomOffset())),
+    influence: Math.min(5, Math.max(1, state.world.factionPressure + randomOffset())),
     action: rand(TABLES.factionActions)
   };
   state.factions.push(faction);
@@ -287,7 +291,7 @@ function askOracle() {
   captureWorld();
   const question = $("oracleQuestion").value.trim();
   if (!question) {
-    $("oracleOutput").textContent = "Ask with intent; the oracle answers no empty silence.";
+    $("oracleOutput").textContent = "The oracle requires a question.";
     return;
   }
 
@@ -297,7 +301,7 @@ function askOracle() {
   if (state.world.dangerLevel >= 4 && index > 0) index -= 1;
   if (state.world.factionPressure <= 2 && index < 5) index += 1;
 
-  const answer = `${base[index]} ${question.toLowerCase().replace(/\?$/, "")}.`;
+  const answer = `${base[index]} ${question.replace(/\?$/, "")}.`;
   $("oracleOutput").textContent = answer;
   logEntry("oracle", answer);
 }
