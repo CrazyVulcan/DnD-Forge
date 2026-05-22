@@ -1,4 +1,6 @@
 const STORAGE_KEY = "situation-forge-state-v1";
+const MAX_PARTY_SIZE = 4;
+const WEATHER_MEMORY = 3;
 
 const TABLES = {
   environments: [
@@ -233,7 +235,9 @@ function escalationTick() {
   if (!state.world.weather) {
     state.world.weather = rand(TABLES.weather);
   } else {
-    state.world.weather = `${state.world.weather}; worsening ${rand(TABLES.weather)}`;
+    const history = state.world.weather.split("; ").slice(-(WEATHER_MEMORY - 1));
+    history.push(`worsening ${rand(TABLES.weather)}`);
+    state.world.weather = history.join("; ");
   }
   renderWorld();
   logEntry(
@@ -301,7 +305,7 @@ function askOracle() {
   if (state.world.dangerLevel >= 4 && index > 0) index -= 1;
   if (state.world.factionPressure <= 2 && index < 5) index += 1;
 
-  const answer = `${base[index]} ${question.replace(/\?$/, "")}.`;
+  const answer = `${base[index]} ${question.replace(/[.!?]+$/, "")}.`;
   $("oracleOutput").textContent = answer;
   logEntry("oracle", answer);
 }
@@ -313,7 +317,7 @@ function bindEvents() {
   });
 
   $("addMember").addEventListener("click", () => {
-    if (state.party.length >= 4) {
+    if (state.party.length >= MAX_PARTY_SIZE) {
       logEntry("party", "Party is already at four members.");
       return;
     }
