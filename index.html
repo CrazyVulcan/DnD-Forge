@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Situation Forge</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="banner">
+        <h1>Situation Forge</h1>
+        <p>Procedural solo RPG situation engine</p>
+      </header>
+
+      <section class="panel" id="world-panel">
+        <h2>World State</h2>
+        <div class="grid two">
+          <label>Region <input id="region" type="text" /></label>
+          <label>Danger Level
+            <select id="dangerLevel">
+              <option value="1">1 - Quiet</option>
+              <option value="2">2 - Uneasy</option>
+              <option value="3">3 - Tense</option>
+              <option value="4">4 - Dire</option>
+              <option value="5">5 - Catastrophic</option>
+            </select>
+          </label>
+          <label>Faction Pressure
+            <select id="factionPressure">
+              <option value="1">1 - Low</option>
+              <option value="2">2 - Noted</option>
+              <option value="3">3 - Active</option>
+              <option value="4">4 - Aggressive</option>
+              <option value="5">5 - Dominant</option>
+            </select>
+          </label>
+          <label>Day & Time <input id="timeDay" type="text" placeholder="Day 7, dusk" /></label>
+          <label>Weather <input id="weather" type="text" placeholder="Cold rain" /></label>
+          <label>Corruption / Doom <input id="doom" type="number" min="0" max="20" /></label>
+          <label>Active Threat <input id="activeThreat" type="text" /></label>
+        </div>
+        <label>Campaign Notes <textarea id="campaignNotes" rows="3"></textarea></label>
+        <button id="saveWorld">Seal World State</button>
+      </section>
+
+      <section class="panel" id="party-panel">
+        <h2>Party (up to 4)</h2>
+        <div id="partyList"></div>
+        <button id="addMember">Add Party Member</button>
+      </section>
+
+      <section class="panel" id="faction-panel">
+        <h2>Factions</h2>
+        <button id="generateFaction">Generate Faction</button>
+        <ul id="factionList"></ul>
+      </section>
+
+      <section class="panel" id="situation-panel">
+        <h2>Situation Generator</h2>
+        <button id="generateSituation">Generate Situation</button>
+        <article id="situationOutput" class="output"></article>
+      </section>
+
+      <section class="panel" id="location-panel">
+        <h2>Room / Location Generator</h2>
+        <button id="generateLocation">Generate Location</button>
+        <article id="locationOutput" class="output"></article>
+      </section>
+
+      <section class="panel" id="oracle-panel">
+        <h2>Oracle</h2>
+        <label>Question <input id="oracleQuestion" type="text" placeholder="Will the sentry betray the cult?" /></label>
+        <button id="askOracle">Ask Oracle</button>
+        <p id="oracleOutput" class="output"></p>
+      </section>
+
+      <section class="panel" id="log-panel">
+        <h2>Campaign Log</h2>
+        <ul id="campaignLog"></ul>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
