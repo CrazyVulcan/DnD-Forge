@@ -87,7 +87,7 @@ function rand(list) {
   return list[Math.floor(Math.random() * list.length)];
 }
 
-function randomVariation() {
+function randomAdjustment() {
   return Math.floor(Math.random() * 2) - 1;
 }
 
@@ -211,8 +211,8 @@ function generateFaction() {
   const faction = {
     name: rand(TABLES.factionNames),
     goal: rand(TABLES.factionGoals),
-    hostility: Math.min(5, Math.max(1, state.world.dangerLevel + randomVariation())),
-    influence: Math.min(5, Math.max(1, state.world.factionPressure + randomVariation())),
+    hostility: Math.min(5, Math.max(1, state.world.dangerLevel + randomAdjustment())),
+    influence: Math.min(5, Math.max(1, state.world.factionPressure + randomAdjustment())),
     action: rand(TABLES.factionActions)
   };
   state.factions.push(faction);
@@ -304,6 +304,7 @@ function askOracle() {
 
   if (state.world.dangerLevel >= 4 && index > 0) index -= 1;
   if (state.world.factionPressure <= 2 && index < 5) index += 1;
+  index = Math.max(0, Math.min(base.length - 1, index));
 
   const answer = `${base[index]} ${question.replace(/[.!?]+$/, "")}.`;
   $("oracleOutput").textContent = answer;
